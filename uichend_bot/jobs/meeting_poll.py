@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date, time
 from telegram.ext.callbackcontext import CallbackContext
 from uichend_bot import utils
 
@@ -34,6 +34,11 @@ class Meeting:
         date_str = self.date.strftime("%d/%m/%y")
         time_str = self.time.strftime("%H:%M")
         return f"UICHEND meeting\n{weekday} {date_str} - {time_str}\n{self.place}"
+
+
+first_meeting = Meeting(date=date(day=7, month=10, year=2022),
+                        time=time(hour=11, minute=30),
+                        place="DIFA - Aula riunioni (1° piano)")
 
 
 class Poll:

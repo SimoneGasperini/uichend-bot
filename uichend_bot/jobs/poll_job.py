@@ -1,8 +1,7 @@
 from datetime import datetime
 from telegram.ext.callbackcontext import CallbackContext
-
-from ..meeting import Meeting
-from .. import utils
+from uichend_bot.meeting import Meeting
+from uichend_bot import utils
 
 
 def poll(context: CallbackContext):

@@ -1,7 +1,4 @@
-import os
-import time
 from datetime import datetime, timedelta
-
 from uichend_bot.config.settings import *
 
 
@@ -15,12 +12,6 @@ def get_chatid():
     with open(CHATID_PATH) as file:
         chat_id = int(file.read())
     return chat_id
-
-
-def set_timezone():
-    os.environ["TZ"] = TIMEZONE
-    if hasattr(time, "tzset"):
-        time.tzset()
 
 
 def get_pickle_db():

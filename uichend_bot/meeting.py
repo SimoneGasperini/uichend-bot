@@ -1,5 +1,5 @@
 from datetime import datetime
-from . import utils
+from uichend_bot import utils
 
 
 class Meeting:

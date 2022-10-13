@@ -1,18 +1,35 @@
+from datetime import date, datetime, time
 from telegram.ext.updater import Updater
 from telegram.ext.picklepersistence import PicklePersistence
 from telegram.ext.commandhandler import CommandHandler
 from uichend_bot import utils
-from uichend_bot.commands.hello_cmd import hello
-from uichend_bot.jobs.poll_job import poll
+from uichend_bot.meeting import Meeting
+from uichend_bot.cmds.hello import hello
+from uichend_bot.jobs.meeting_poll import meeting_poll
 
 
 def run_bot():
 
     updater = Updater(token=utils.get_token(), use_context=True,
                       persistence=PicklePersistence(utils.get_pickle_db()))
+    if "meetings" not in updater.dispatcher.bot_data:
+        updater.dispatcher.bot_data["meetings"] = []
+        first_meeting = Meeting(date=date(day=7, month=10, year=2022),
+                                time=time(hour=11, minute=30),
+                                place="DIFA - Aula riunioni (1° piano)")
+        updater.dispatcher.bot_data["meetings"].append(first_meeting)
 
     updater.dispatcher.add_handler(CommandHandler("hello", hello))
-    updater.job_queue.run_once(poll, when=10)
+
+    interval_poll = utils.get_timedelta_between_meetings()
+    poll_date = updater.dispatcher.bot_data["meetings"][-1].date - \
+        utils.get_timedelta_poll_meeting()
+    poll_time = utils.get_default_time_poll()
+    first_poll = datetime.combine(poll_date, poll_time)
+    first_poll = utils.convert_datetime_timezone(first_poll)
+    updater.job_queue.run_repeating(meeting_poll,
+                                    interval=interval_poll,
+                                    first=first_poll)
 
     updater.start_polling()
     updater.idle()

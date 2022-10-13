@@ -30,13 +30,21 @@ def convert_datetime_timezone(dt, from_tz=None, to_tz=None):
     return new_dt
 
 
-def get_timedelta():
-    return timedelta(days=INTERVAL_BETWEEN_MEETINGS)
+def get_timedelta_poll_meeting():
+    return timedelta(days=TIMEDELTA_POLL_MEETING)
 
 
-def get_default_time():
-    return datetime.strptime(DEFAULT_TIME_MEETING, "%H:%M")
+def get_default_time_poll():
+    return datetime.strptime(DEFAULT_TIME_POLL, "%H:%M").time()
 
 
-def get_default_place():
+def get_timedelta_between_meetings():
+    return timedelta(days=TIMEDELTA_BETWEEN_MEETINGS)
+
+
+def get_default_time_meeting():
+    return datetime.strptime(DEFAULT_TIME_MEETING, "%H:%M").time()
+
+
+def get_default_place_meeting():
     return DEFAULT_PLACE_MEETING
